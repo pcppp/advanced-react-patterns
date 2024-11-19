@@ -12,7 +12,10 @@ const AuthProvider = ({user, ...props}) => (
 )
 
 function useAuth() {
-  return React.useContext(AuthContext)
+  return {
+    user: {username: 'jakiechan', tagline: '', bio: ''},
+  }
+  // return React.useContext(AuthContext)
 }
 
 export {AuthProvider, useAuth}

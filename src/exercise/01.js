@@ -10,7 +10,7 @@ import * as userClient from '../user-client'
 import {useAuth} from '../auth-context'
 
 const UserContext = React.createContext()
-UserContext.displayName = 'UserContext'
+UserContext.displayName = 'UserContext' // 服务于调试
 
 function userReducer(state, action) {
   switch (action.type) {
@@ -72,12 +72,15 @@ function useUser() {
   }
   return context
 }
+function updateUser(dispatch, user, updates) {
+  dispatch({type: 'start update', updates})
+  return userClient.updateUser(user, updates).then(
+    updatedUser => dispatch({type: 'finish update', updatedUser}),
+    error => dispatch({type: 'fail update', error}),
+  )
+}
 
-// 🐨 add a function here called `updateUser`
-// Then go down to the `handleSubmit` from `UserSettings` and put that logic in
-// this function. It should accept: dispatch, user, and updates
-
-// export {UserProvider, useUser}
+export {UserProvider, useUser}
 
 // src/screens/user-profile.js
 // import {UserProvider, useUser} from './context/user-context'
@@ -97,12 +100,7 @@ function UserSettings() {
 
   function handleSubmit(event) {
     event.preventDefault()
-    // 🐨 move the following logic to the `updateUser` function you create above
-    userDispatch({type: 'start update', updates: formState})
-    userClient.updateUser(user, formState).then(
-      updatedUser => userDispatch({type: 'finish update', updatedUser}),
-      error => userDispatch({type: 'fail update', error}),
-    )
+    updateUser(userDispatch, user, formState)
   }
 
   return (

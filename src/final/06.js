@@ -32,7 +32,7 @@ function useToggle({
   initialOn = false,
   reducer = toggleReducer,
   onChange,
-  on: controlledOn,
+  on: controlledOn, // 将on重命名为controlledOn
 } = {}) {
   const {current: initialState} = React.useRef({on: initialOn})
   const [state, dispatch] = React.useReducer(reducer, initialState)
